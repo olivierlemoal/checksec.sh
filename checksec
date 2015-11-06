@@ -1159,7 +1159,7 @@ do
     aslrcheck
     echo_message "* Does the CPU support NX: " "" "" ""
     nxcheck
-    echo_message "         COMMAND    PID RELRO           STACK CANARY      NX/PaX        PIE 			FORTIFY\n" "" "" '{'
+    echo_message "         COMMAND    PID RELRO           STACK CANARY            NX/PaX        PIE                     FORTIFY\n" "" "" '{'
     for N in [1-9]*; do
       if [ $N != $$ ] && readlink -q $N/exe > /dev/null; then
 		name=$(head -1 $N/status | cut -b 7-)
@@ -1204,7 +1204,7 @@ do
     aslrcheck
     echo_message "* Does the CPU support NX: " '' '' ''
     nxcheck
-    echo_message "         COMMAND    PID RELRO           STACK CANARY      NX/PaX        PIE 			FORTIFY\n" "" "" '{'
+    echo_message "         COMMAND    PID RELRO           STACK CANARY            NX/PaX        PIE                     FORTIFY\n" "" "" '{'
     for N in $(ps -Ao pid,comm | grep $2 | cut -b1-6); do
       if [ -d $N ] ; then
 	name=$(head -1 $N/status | cut -b 7-)
