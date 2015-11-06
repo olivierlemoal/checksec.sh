@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# The BSD License (http://www.opensource.org/licenses/bsd-license.php) 
+# The BSD License (http://www.opensource.org/licenses/bsd-license.php)
 # specifies the terms and conditions of use for checksec.sh:
 #
 # Copyright (c) 2014-2015, Brian Davis
@@ -8,34 +8,34 @@
 # Copyright (c) 2009-2011, Tobias Klein
 # All rights reserved.
 #
-# Redistribution and use in source and binary forms, with or without 
-# modification, are permitted provided that the following conditions 
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions
 # are met:
-# 
-# * Redistributions of source code must retain the above copyright 
+#
+# * Redistributions of source code must retain the above copyright
 #   notice, this list of conditions and the following disclaimer.
-# * Redistributions in binary form must reproduce the above copyright 
-#   notice, this list of conditions and the following disclaimer in 
-#   the documentation and/or other materials provided with the 
+# * Redistributions in binary form must reproduce the above copyright
+#   notice, this list of conditions and the following disclaimer in
+#   the documentation and/or other materials provided with the
 #   distribution.
-# * Neither the name of Tobias Klein nor the name of trapkit.de may be 
-#   used to endorse or promote products derived from this software 
+# * Neither the name of Tobias Klein nor the name of trapkit.de may be
+#   used to endorse or promote products derived from this software
 #   without specific prior written permission.
 #
-# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS 
-# "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT 
-# LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS 
-# FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE 
-# COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, 
-# INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, 
-# BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS 
-# OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED 
-# AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, 
-# OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF 
-# THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH 
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+# "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+# LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+# FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+# COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+# INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+# BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
+# OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED
+# AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+# OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF
+# THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
 # DAMAGE.
 #
-# --- Modified Version --- 
+# --- Modified Version ---
 # Name	  : checksec.sh
 # Version : 1.7.0
 # Author  : Brian Davis
@@ -81,7 +81,7 @@ else
 fi
 
 sysarch=$(uname -m)
-if [[ "$sysarch" == x86_64 ]]; then 
+if [[ "$sysarch" == x86_64 ]]; then
     arch="64"
 elif [[ "$sysarch" == i?86 ]]; then
     arch="32"
@@ -126,7 +126,7 @@ fetch() {
 version() {
   echo "checksec v${SCRIPT_MAJOR}.${SCRIPT_MINOR}.${SCRIPT_REVISION}, Brian Davis, github.com/slimm609/checksec.sh, Oct 2015"
   echo "Based off checksec v1.5, Tobias Klein, www.trapkit.de, November 2011"
-  echo 
+  echo
 }
 
 
@@ -167,7 +167,7 @@ echo_message() {
       echo -n -e "$3"
   elif [[ $format == "json" ]]; then
       echo -n -e "$4"
-  else #default to cli 
+  else #default to cli
       echo -n -e "$1"
   fi
 }
@@ -284,7 +284,7 @@ filecheck() {
     echo_message '\033[31mNX disabled\033[m   ' 'NX disabled,' ' nx="no"' '"nx":"no",'
   else
     echo_message '\033[32mNX enabled \033[m   ' 'NX enabled,' ' nx="yes"' '"nx":"yes",'
-  fi 
+  fi
 
   # check for PIE support
   $debug && echo -e "\n***function filecheck->pie"
@@ -293,12 +293,12 @@ filecheck() {
   elif $readelf -h $1 2>/dev/null | grep -q 'Type:[[:space:]]*DYN'; then
     if $readelf -d $1 2>/dev/null | grep -q '(DEBUG)'; then
       echo_message '\033[32mPIE enabled  \033[m   ' 'PIE enabled,' ' pie="yes"' '"pie":"yes",'
-    else   
+    else
       echo_message '\033[33mDSO          \033[m   ' 'DSO,' ' pie="dso"' '"pie":"dso",'
     fi
   else
     echo_message '\033[33mNot an ELF file\033[m   ' 'Not an ELF file,' ' pie="not_elf"' '"pie":"not_elf",'
-  fi 
+  fi
 
   # check for rpath / run path
   $debug && echo -e "\n***function filecheck->rpath"
@@ -332,7 +332,7 @@ filecheck() {
 
   FS_chk_func_libc=( $($readelf -s $FS_libc | grep _chk@@ | awk '{ print $8 }' | cut -c 3- | sed -e 's/_chk@.*//') )
   FS_functions=( $($readelf -s $1 | awk '{ print $8 }' | sed 's/_*//' | sed -e 's/@.*//') )
-  FS_count 
+  FS_count
 
   for FS_elem_functions in $(seq 0 $((${#FS_functions[@]} - 1)))
   do
@@ -410,7 +410,7 @@ proccheck() {
     echo_message '\033[31mNX disabled\033[m   ' 'NX disabled,' ' nx="no"' '"nx":"no",'
   else
     echo_message '\033[32mNX enabled \033[m   ' 'NX enabled,' ' pax="yes"' '"nx":"yes",'
-  fi 
+  fi
 
   # check for PIE support
   $debug && echo -e "\n***function proccheck->PIE"
@@ -419,7 +419,7 @@ proccheck() {
   elif $readelf -h $1/exe 2>/dev/null | grep -q 'Type:[[:space:]]*DYN'; then
     if $readelf -d $1/exe 2>/dev/null | grep -q '(DEBUG)'; then
       echo_message '\033[32mPIE enabled          \033[m   ' 'PIE enabled,' ' pie="yes"' '"pie":"yes",'
-    else   
+    else
       echo_message '\033[33mDynamic Shared Object\033[m   ' 'Dynamic Shared Object,' ' pie="dso"' '"pie":"dso",'
     fi
   else
@@ -442,9 +442,9 @@ proccheck() {
 libcheck() {
   $debug && echo "***function libcheck"
   libs=( $(awk '{ print $6 }' /proc/$1/maps | grep '/' | sort -u | xargs file | grep ELF | awk '{ print $1 }' | sed 's/:/ /') )
- 
+
   echo_message "\n* Loaded libraries (file information, # of mapped files: ${#libs[@]}):\n\n" "" "" ""
-  
+
   for element in $(seq 0 $((${#libs[@]} - 1)))
   do
     echo_message "  ${libs[$element]}:\n" "${libs[$element]}," "" ""
@@ -463,7 +463,7 @@ aslrcheck() {
     echo_message ':\033[33m insufficient privileges for PaX ASLR checks\033[m\n' '' '' ''
     echo_message '  Fallback to standard Linux ASLR check' '' '' ''
   fi
-  
+
   if cat /proc/1/status 2> /dev/null | grep -q 'PaX:'; then
     printf ": "
     if cat /proc/1/status 2> /dev/null | grep 'PaX:' | grep -q 'R'; then
@@ -493,7 +493,7 @@ aslrcheck() {
       echo_message '\033[31mNot supported\033[m\n' '' '' ''
     fi
     echo_message "  See the kernel file 'Documentation/sysctl/kernel.txt' for more details.\n\n" '' '' ''
-  fi 
+  fi
 }
 
 # check cpu nx flag
@@ -514,7 +514,7 @@ kernelcheck() {
   echo_message "  userspace processes, this option lists the status of kernel configuration\n" '' '' ''
   echo_message "  options that harden the kernel itself against attack.\n\n" '' '' ''
   echo_message "  Kernel config: " '' '' '{ "kernel": '
-  
+
   if [ -f /proc/config.gz ] ; then
     kconfig="zcat /proc/config.gz"
     echo_message "\033[32m/proc/config.gz\033[m\n\n" '/proc/config.gz' '<kernel config="/proc/config.gz"' '{ "KernelConfig":"/proc/config.gz",'
@@ -615,7 +615,7 @@ kernelcheck() {
   fi
 
 #x86 only
-if [ "$arch" == "32" ]; then 
+if [ "$arch" == "32" ]; then
   echo_message "\n" "\n" "\n" ""
   echo_message "* X86 only: 	  			 \n" "" "" ""
 
@@ -655,13 +655,13 @@ fi
   if $kconfig | grep -qi 'CONFIG_SECURITY_SELINUX=y'; then
 	getsestatus
 	sestatus=$?
-	if [ $sestatus == 0 ]; then 
+	if [ $sestatus == 0 ]; then
     	echo_message "\033[31mDisabled\033[m\n" "Disabled" "    <selinux enabled='no' />" '"selinux":{ "enabled":"no" },'
     	echo_message "\n  SELinux infomation available here: \n" "" "" ""
     	echo_message "    http://selinuxproject.org/\n" "" "" ""
-	elif [ $sestatus == 1 ]; then 
+	elif [ $sestatus == 1 ]; then
     	echo_message "\033[33mPermissive\033[m\n" "Permissive" "    <selinux enabled='yes' mode='permissive' />" '"selinux":{ "enabled":"yes", "mode":"permissive" },'
-	elif [ $sestatus == 2 ]; then 
+	elif [ $sestatus == 2 ]; then
     	echo_message "\033[32mEnforcing\033[m\n" "Enforcing" "    <selinux enabled='yes' mode='enforcing' />" '"selinux":{ "enabled":"yes", "mode":"enforcing" },'
 	fi
   else
@@ -743,7 +743,7 @@ fi
     else
       echo_message "\033[31mDisabled\033[m\n" "Disabled," " config_pax_randmmap='no'" '"config_pax_randmmap":"no",'
     fi
- 
+
     echo_message "  Sanitize freed memory:                  " "" "" ""
     if $kconfig | grep -qi 'CONFIG_PAX_MEMORY_SANITIZE=y'; then
       echo_message "\033[32mEnabled\033[m\n" "Enabled," " config_pax_memory_sanitize='yes'" '"config_pax_memory_sanitize":"yes",'
@@ -954,7 +954,7 @@ FS_comparison() {
 
 FS_summary() {
   $debug && echo "***function FS_summary"
-  echo_message "\n" "" "\n" "" 
+  echo_message "\n" "" "\n" ""
   echo_message "SUMMARY:\n\n" "" "" ""
   echo_message "* Number of checked functions in libc                : ${#FS_chk_func_libc[@]}\n" "${#FS_chk_func_libc[@]}," "    <stats nb_libc_func='${#FS_chk_func_libc[@]}'" "{ \"stats\": { \"nb_libc_func\":\"${#FS_chk_func_libc[@]}\","
   echo_message "* Total number of library functions in the executable: ${#FS_functions[@]}\n" "${#FS_functions[@]}," " nb_total_func='${#FS_functions[@]}'" "\"nb_total_func\":\"${#FS_functions[@]}\","
@@ -977,7 +977,7 @@ for command in awk sysctl uname mktemp openssl grep stat file find head ps readl
         echo $(file "$absolutepath")
       else
         echo $(file "$path")
-      fi    
+      fi
 done
 }
 
@@ -989,7 +989,7 @@ for command in cat awk sysctl uname mktemp openssl grep stat file find head ps r
        exit 255
     fi
 done
-  
+
 if (command_exists readelf); then
      readelf=readelf
 elif (command_exists eu-readelf); then
@@ -1062,7 +1062,7 @@ do
     format="$2"
     shift 2
     ;;
-  
+
   --dir)
     if [ "$3" = "-v" ] ; then
       verbose=true
@@ -1082,7 +1082,7 @@ do
     fi
     cd $tempdir
     echo_message "RELRO           STACK CANARY      NX            PIE             RPATH      RUNPATH      FILE\n" '' "<dir name='$tempdir'>\n" "{ \"dir\": { \"name\":\"$tempdir\" } "
-    
+
     for N in [A-Za-z]*; do
       if [ "$N" != "[A-Za-z]*" ]; then
 	# read permissions?
@@ -1112,7 +1112,7 @@ do
     echo_message "" "" "</dir>\n" "}"
     exit 0
     ;;
-  
+
   --file)
     if [ $have_readelf -eq 0 ] ; then
       exit 1
@@ -1178,7 +1178,7 @@ do
     if [ ! -e /usr/bin/id ] ; then
       echo_message "\n\033[33mNote: If you are running 'checksec.sh' as an unprivileged user, you\n" "" "" ""
       echo_message "      will not see all processes. Please run the script as root.\033[m\n\n" "" "" "\n"
-    else 
+    else
       if !(root_privs) ; then
 	echo_message "\n\033[33mNote: You are running 'checksec.sh' as an unprivileged user.\n" "" "" ""
 	echo_message "      Too see all processes, please run the script as root.\033[m\n\n" "" "" "\n"
@@ -1252,7 +1252,7 @@ do
     echo_message "* Does the CPU support NX: " '' '' ''
     nxcheck
     echo_message "* Process information:\n\n" "" "" ""
-    echo_message "         COMMAND    PID RELRO             STACK CANARY           NX/PaX        PIE\n" '' '' '' 
+    echo_message "         COMMAND    PID RELRO             STACK CANARY           NX/PaX        PIE\n" '' '' ''
     N=$2
     if [ -d $N ] ; then
 	name=$(head -1 $N/status | cut -b 7-)
@@ -1286,7 +1286,7 @@ do
   --kernel)
     cd /proc
     echo_message "* Kernel protection information:\n\n" "" "" ""
-    kernelcheck 
+    kernelcheck
     exit 0
     ;;
 
